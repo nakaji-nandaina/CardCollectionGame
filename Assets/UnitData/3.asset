@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476becf40977dfe429669dbce68d11cc, type: 3}
+  m_Name: 3
+  m_EditorClassIdentifier: 
+  Id: 10770c4ed138120429297cf573712e4d:11400000
+  _unitName: "\u30BB\u30E9\u30D5\u30A3\u30CA"
+  _fullSprite: {fileID: 21300000, guid: c254b3de16ab5b4409b0b875b095cdc8, type: 3}
+  _faceSprite: {fileID: 21300000, guid: cfb2a7683bdbf8943a74a845c7d6570b, type: 3}
+  _maxHealth: 20
+  _attackPoint: 9
+  _magicDefensePoint: 0
+  _physDefensePoint: 0
