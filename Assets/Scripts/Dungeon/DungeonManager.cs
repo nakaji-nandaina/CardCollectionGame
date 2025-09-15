@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,27 +26,26 @@ public class DungeonManager : MonoBehaviour
     private int _gotGold = 0;       // 獲得したゴールド
     private float _playSpeed = 1.0f;// プレイ速度
     private List<PlayerUnitData> _gotUnitDataList = new List<PlayerUnitData>(); // 獲得したユニットデータリスト
-
+    private DungeonData _currentDungeonData = null; // 現在のダンジョンデータ
+    private Coroutine _dungeonLoop;
 
     public DungeonState CurrentState => _currentState;
     public int CurrentFloor => _currentFloor;
     public int GotGold => _gotGold;
     public float PlaySpeed => _playSpeed;
     public List<PlayerUnitData> GotUnitDataList => _gotUnitDataList;
+    public DungeonData CurrentDungeonData => _currentDungeonData;
 
     public Action<DungeonState> OnDungeonStateChanged;
     public Action<float> OnPlaySpeedChanged;
-    private void OnDisable()
-    {
-        Instance = null;
-    }
-
+    
     private void Awake()
     {
         Instance = this;
     }
 
-    public void ChangeState(DungeonState newState)
+
+    private void ChangeState(DungeonState newState)
     {
         if (_currentState != newState)
         {
@@ -56,24 +56,73 @@ public class DungeonManager : MonoBehaviour
     }
 
 
-    public void HandleDungeonStart()
+    public void StartDungeon(DungeonData dungeonData)
+    {
+        if(dungeonData == null)
+        {
+            Debug.LogError("DungeonData is null. Cannot start dungeon.");
+            return;
+        }
+        if(_dungeonLoop != null)
+        {
+            Debug.LogWarning("Dungeon is already in progress.");
+            return;
+        }
+        _currentDungeonData = dungeonData;
+        _currentFloor = 1;
+        _gotGold = 0;
+        _dungeonLoop = StartCoroutine(DungeonLoop());
+
+    }
+
+
+    public void HandleBattleFinish(BattleResult result)
+    {
+        switch(result)
+        {
+            case BattleResult.Victory:
+                ChangeState(DungeonState.FloorCleared);
+                break;
+            case BattleResult.Defeat:
+                ChangeState(DungeonState.Failed);
+                break;
+        }
+    }
+    private IEnumerator DungeonLoop()
     {
         ChangeState(DungeonState.DungeonStart);
-    }
+        yield return null;
 
-    public void HandleBattleStart()
-    {
+        int maxFloor = _currentDungeonData?.MaxFloor ?? 1;
+        for (int floor = _currentFloor; floor <= maxFloor; floor++)
+        {
+            _currentFloor = floor;
 
-    }
+            // フロア開始
+            ChangeState(DungeonState.FloorStart);
+            yield return null;
 
-    public void HandleBattleWin()
-    {
-        
-    }   
+            // バトルへ遷移（BattleController が DungeonManager.OnDungeonStateChanged を監視してバトルを開始する）
+            ChangeState(DungeonState.Battle);
 
-    public void HandleBattleLose()
-    {
+            // バトルの結果（HandleBattleFinish）で DungeonState が InProgress か Failed に遷移する想定
+            // ここで待つ：Battle が終わるまで（DungeonState が Battle でなくなるまで）待機
+            yield return new WaitUntil(() => _currentState != DungeonState.Battle);
 
+            if (_currentState == DungeonState.Failed)
+            {
+                _dungeonLoop = null;
+                yield break;
+            }
+
+
+            // 次フロアへ移動する前の短い間
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        // 全フロアクリア
+        ChangeState(DungeonState.DungeonCleared);
+        _dungeonLoop = null;
     }
 
 }

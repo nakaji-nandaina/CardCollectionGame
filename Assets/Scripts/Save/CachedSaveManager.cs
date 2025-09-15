@@ -35,6 +35,7 @@ public static class CachedSaveManager
             CachedSaveData = new SaveData();
         }
     }
+
     public static void Save()
     {
         SaveIO.Save(CachedSaveData);

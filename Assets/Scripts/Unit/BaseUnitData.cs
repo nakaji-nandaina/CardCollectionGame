@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public enum UnitType
@@ -15,6 +13,7 @@ public abstract class BaseUnitData : BaseScriptableObject
     [SerializeField, Header("‘Sg‰æ‘œ")] private Sprite _fullSprite;
     [SerializeField, Header("Šç‰æ‘œ")] private Sprite _faceSprite;
     [SerializeField, Header("‘Ì—Í")] private int _maxHealth;
+    [SerializeField, Header("–‚—Í")] private int _maxMagicPoint;
     [SerializeField, Header("UŒ‚—Í")] private int _attackPoint;
     [SerializeField, Header("–‚–@–hŒä—Í")] private int _magicDefensePoint;
     [SerializeField, Header("•¨—–hŒä—Í")] private int _physDefensePoint;
@@ -24,6 +23,7 @@ public abstract class BaseUnitData : BaseScriptableObject
     public Sprite FullSprite => _fullSprite;
     public Sprite FaceSprite => _faceSprite;
     public int MaxHealth => _maxHealth;
+    public int MaxMagicPoint => _maxMagicPoint;
     public int AttackPoint => _attackPoint;
     public int MagicDefensePoint => _magicDefensePoint;
     public int PhysDefensePoint => _physDefensePoint;

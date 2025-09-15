@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef4cde02c09e74f4dadc136b81b00549, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  Id: d211279a076a7834095a3bd99a1cf31a:11400000
+  _unitName: "\u65751"
+  _fullSprite: {fileID: 21300000, guid: f5b0b501c54ac754cb4aed99b39759f4, type: 3}
+  _faceSprite: {fileID: 21300000, guid: defc21c0054256a459a80d25ddf12a8c, type: 3}
+  _maxHealth: 30
+  _maxMagicPoint: 50
+  _attackPoint: 3
+  _magicDefensePoint: 0
+  _physDefensePoint: 0
+  _skills: []
+  _expPoint: 10
+  references:
+    version: 2
+    RefIds: []
