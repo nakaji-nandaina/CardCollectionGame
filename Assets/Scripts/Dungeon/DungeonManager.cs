@@ -51,7 +51,7 @@ public class DungeonManager : MonoBehaviour
         {
             _currentState = newState;
             OnDungeonStateChanged?.Invoke(newState);
-            Debug.Log($"Dungeon State changed to: {_currentState}");
+            //Debug.Log($"Dungeon State changed to: {_currentState}");
         }
     }
 

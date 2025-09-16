@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerUnitsView : MonoBehaviour
 {
@@ -58,10 +59,52 @@ public class PlayerUnitsView : MonoBehaviour
     }
     public void Damaged(string instancedId)
     {
-        // ダメージエフェクト再生(DOTween導入後)
+        // ダメージエフェクト再生
+        if (!_views.ContainsKey(instancedId))
+        {
+            return;
+        }
+        Transform t = _views[instancedId].transform;
+        RectTransform rt = t as RectTransform;
+        rt.DOKill(true); // 既存のアニメを停止
+        float offsetX = 10f;
+        float duration = 0.05f; // 左右1往復の片道時間
+
+        Vector2 start = rt.anchoredPosition;
+        // シーケンスで左右に振動
+        Sequence seq = DOTween.Sequence();
+        // 左へ
+        seq.Append(rt.DOAnchorPos(start + new Vector2(-offsetX, 0), duration));
+        // 右へ
+        seq.Append(rt.DOAnchorPos(start + new Vector2(offsetX, 0), duration));
+        // 戻る
+        seq.Append(rt.DOAnchorPos(start, duration));
+        // 繰り返し回数を設定（ここでは2回往復）
+        seq.SetLoops(2, LoopType.Yoyo);
+        // Easeで揺れっぽさを演出
+        seq.SetEase(Ease.InOutQuad);
     }
     public void Attack(string instancedId)
     {
-        
+        if (!_views.ContainsKey(instancedId))
+        {
+            return;
+        }
+        Transform t = _views[instancedId].transform;
+
+        // RectTransform を期待する場合は RectTransform を使う
+        RectTransform rt = t as RectTransform;
+
+        rt.DOKill(true); // 既存のアニメを停止
+        // 現在のローカルY を基準に上に跳ねる攻撃アニメ
+        float offsetY = 20f;
+        float upDuration = 0.12f;
+        Vector3 start= rt.anchoredPosition;
+        Vector3 target = start + new Vector3(0, offsetY, 0);
+
+        rt.DOAnchorPos(target, upDuration).SetEase(Ease.InSine).OnComplete(() =>
+        {
+            rt.DOAnchorPos(start, upDuration).SetEase(Ease.InSine);
+        });
     }
 }

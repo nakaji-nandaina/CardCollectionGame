@@ -76,7 +76,7 @@ public class BattleController : MonoBehaviour
 
         }
         OnBattleStateChanged?.Invoke(newState);
-        Debug.Log($"Battle State changed to: {_currentState}");        
+        //Debug.Log($"Battle State changed to: {_currentState}");        
     }
 
     private void OnDungeonStateChanged(DungeonState state)
@@ -181,6 +181,7 @@ public class BattleController : MonoBehaviour
             int damage = Mathf.Max(0, attacker.AttackPoint - target.PhysDefensePoint);
             target.CurrentHp = Mathf.Max(0, target.CurrentHp - damage);
             OnAttackPerformed?.Invoke(attacker, target, damage);
+            Debug.Log($"{attacker.Data.UnitName} attacks {target.Data.UnitName} for {damage} damage.");
             yield return new WaitForSeconds(ActionDuration);
         }
     }

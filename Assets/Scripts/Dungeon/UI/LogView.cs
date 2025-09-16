@@ -20,6 +20,11 @@ public class LogView : MonoBehaviour
     {
         Text newLog = Instantiate(_textPrefab, _logScrollView.content);
         newLog.text = log;
-        _logScrollView.verticalNormalizedPosition = 0f;
+        StartCoroutine(ScrollToBottomNextFrame());
+    }
+    IEnumerator ScrollToBottomNextFrame()
+    {
+        yield return null; // レイアウト更新を待つ
+        _logScrollView.verticalNormalizedPosition = 0f; // 下端
     }
 }
