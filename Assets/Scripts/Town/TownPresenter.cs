@@ -17,6 +17,7 @@ public class TownPresenter : MonoBehaviour
         switch (state)
         {
             case TownState.Idle:
+                AudioManager.Instance.PlayBGM(BGMName.Town);
                 break;
 
             case TownState.Start:

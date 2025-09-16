@@ -35,6 +35,10 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ChangeState(TownState.Idle);
+    }
     public void ChangeState(TownState state)
     {
         if(state == _currentState)

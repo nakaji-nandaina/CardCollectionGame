@@ -47,6 +47,7 @@ public class ExplorePresenter : MonoBehaviour
             case DungeonState.DungeonStart:
                 // ダンジョン開始時にプレイヤーユニットビューを初期化
                 _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
+                AudioManager.Instance.PlayBGM(BGMName.Dungeon);
                 break;
             case DungeonState.FloorStart:
                 _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
@@ -87,6 +88,10 @@ public class ExplorePresenter : MonoBehaviour
     private void OnAttackPerformed(BattleController.BattleUnit attacker, BattleController.BattleUnit target, int damage)
     {
         _logView.AddLog($"{attacker.Data.UnitName} の攻撃！ {target.Data.UnitName} に {damage} のダメージ！");
+        
+        //Attack1,2,3からランダムに選択
+        SEName attackSE = (SEName)System.Enum.Parse(typeof(SEName), $"Attack{Random.Range(1, 4)}");
+        AudioManager.Instance.PlaySE(SEName.Attack1);
         if (attacker.Type == UnitType.Player)
         {
             _playerUnitsView.Attack(attacker.InstanceId);
