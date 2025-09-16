@@ -34,4 +34,9 @@ public class ExploreView : MonoBehaviour
     {
         //DOTween“±“üŒã‚ÉŽÀ‘•
     }
+
+    public void UpdateFloor(int floorNum)
+    {
+        _floorText.text = $"{floorNum}F";
+    }
 }

@@ -148,6 +148,7 @@ public class BattleController : MonoBehaviour
         ChangeBattleState(BattleState.PlayerTurn);
         while (true)
         {
+            yield return new WaitForSeconds(TurnDuration);
             ChangeBattleState(BattleState.PlayerTurn);
             yield return PerformTeamAction(_players, _enemies);
             if (CheckVictory(out var outcome)) 

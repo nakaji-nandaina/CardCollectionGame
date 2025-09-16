@@ -50,6 +50,7 @@ public class ExplorePresenter : MonoBehaviour
                 break;
             case DungeonState.FloorStart:
                 _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
+                _exploreView.UpdateFloor(DungeonManager.Instance.CurrentFloor);
                 _logView.AddLog($"--- {DungeonManager.Instance.CurrentFloor}F“ž’B ---");
                 break;
             case DungeonState.FloorCleared:
