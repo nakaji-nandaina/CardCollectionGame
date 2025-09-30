@@ -11,6 +11,7 @@ public class PlayerUnitsView : MonoBehaviour
 
     public void SetUp(List<UnitSlot> unitSlots)
     {
+        _views.Clear();
         int count = Mathf.Min(unitSlots.Count, _playerCardPrefabList.Count);
         for (int i = 0; i < count; i++)
         {

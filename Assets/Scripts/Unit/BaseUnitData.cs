@@ -17,6 +17,8 @@ public abstract class BaseUnitData : BaseScriptableObject
     [SerializeField, Header("UŒ‚—Í")] private int _attackPoint;
     [SerializeField, Header("–‚–@–hŒä—Í")] private int _magicDefensePoint;
     [SerializeField, Header("•¨—–hŒä—Í")] private int _physDefensePoint;
+    [SerializeField, Header("‘¬“x"), Range(1, 200)] private int _speed = 10;
+    [SerializeField, Header("ó‘ÔˆÙí‘Ï«")] private EffectResistances _effectResistances;
     [SerializeReference, SelectableSerializeReference, Header("ƒXƒLƒ‹")] private List<BaseSkillData> _skills;
 
     public string UnitName=> _unitName;
@@ -27,6 +29,8 @@ public abstract class BaseUnitData : BaseScriptableObject
     public int AttackPoint => _attackPoint;
     public int MagicDefensePoint => _magicDefensePoint;
     public int PhysDefensePoint => _physDefensePoint;
+    public int Speed => _speed;
+    public EffectResistances EffectResistances => _effectResistances;
     public List<BaseSkillData> Skills => _skills;
     public abstract UnitType UnitType { get;  }
 }

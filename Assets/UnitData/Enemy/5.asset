@@ -21,6 +21,15 @@ MonoBehaviour:
   _attackPoint: 3
   _magicDefensePoint: 0
   _physDefensePoint: 0
+  _speed: 1
+  _effectResistances:
+    _poison: 0
+    _burn: 0
+    _freeze: 0
+    _paralysis: 0
+    _bleed: 0
+    _confusion: 0
+    _stun: 0
   _skills: []
   _expPoint: 10
   references:

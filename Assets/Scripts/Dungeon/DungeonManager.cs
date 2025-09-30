@@ -9,9 +9,9 @@ public enum DungeonState
     DungeonStart,
     FloorStart,
     Battle,
-    InProgress,
     FloorCleared,
     DungeonCleared,
+    FloorEnd,
     Failed,
 }
 
@@ -38,7 +38,6 @@ public class DungeonManager : MonoBehaviour
 
     public Action<DungeonState> OnDungeonStateChanged;
     public Action<float> OnPlaySpeedChanged;
-    
     private void Awake()
     {
         Instance = this;
@@ -75,6 +74,17 @@ public class DungeonManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// フロア開始アニメーションの完了通知受け取り
+    /// </summary>
+    public void NotifyFloorStartAnimationFinished()
+    {
+        ChangeState(DungeonState.Battle);
+    }
+    public void NotifyFloorClearedAnimationFinished()
+    {
+        ChangeState(DungeonState.FloorEnd);
+    }
 
     public void HandleBattleFinish(BattleResult result)
     {
@@ -101,10 +111,8 @@ public class DungeonManager : MonoBehaviour
             // フロア開始
             ChangeState(DungeonState.FloorStart);
             yield return null;
-
-            // バトルへ遷移（BattleController が DungeonManager.OnDungeonStateChanged を監視してバトルを開始する）
-            ChangeState(DungeonState.Battle);
-
+            // バトルの開始を待つ
+            yield return new WaitUntil(() => _currentState == DungeonState.Battle);
             // バトルの結果（HandleBattleFinish）で DungeonState が InProgress か Failed に遷移する想定
             // ここで待つ：Battle が終わるまで（DungeonState が Battle でなくなるまで）待機
             yield return new WaitUntil(() => _currentState != DungeonState.Battle);
@@ -115,6 +123,7 @@ public class DungeonManager : MonoBehaviour
                 yield break;
             }
 
+            yield return new WaitUntil(()=> _currentState == DungeonState.FloorEnd);
 
             // 次フロアへ移動する前の短い間
             yield return new WaitForSeconds(0.5f);

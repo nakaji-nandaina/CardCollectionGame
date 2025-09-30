@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,13 +32,32 @@ public class ExploreView : MonoBehaviour
         _enemyHpbar[index].value = currentHp;
         _enemyHpText[index].text = $"{currentHp}/{_maxHp}";
     }
-    public void PlayEnemyDamagedAnimation()
+    public void PlayEnemyDamagedAnimation(int index)
     {
-        //DOTween導入後に実装
+        Transform t = _enemyImage[index].transform;
+        RectTransform rt = t as RectTransform;
+        rt.DOKill(true); // 既存のアニメを停止
+        float offsetX = 10f;
+        float duration = 0.05f; // 左右1往復の片道時間
+
+        Vector2 start = rt.anchoredPosition;
+        // シーケンスで左右に振動
+        Sequence seq = DOTween.Sequence();
+        // 左へ
+        seq.Append(rt.DOAnchorPos(start + new Vector2(-offsetX, 0), duration));
+        // 右へ
+        seq.Append(rt.DOAnchorPos(start + new Vector2(offsetX, 0), duration));
+        // 戻る
+        seq.Append(rt.DOAnchorPos(start, duration));
+        // 繰り返し回数を設定（ここでは2回往復）
+        seq.SetLoops(2, LoopType.Yoyo);
+        // Easeで揺れっぽさを演出
+        seq.SetEase(Ease.InOutQuad);
     }
 
-    public void UpdateFloor(int floorNum)
+    public void UpdateFloor(int floorNum,Action OnFinished)
     {
         _floorText.text = $"{floorNum}F";
+        OnFinished?.Invoke();
     }
 }

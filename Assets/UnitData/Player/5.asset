@@ -17,9 +17,19 @@ MonoBehaviour:
   _fullSprite: {fileID: 21300000, guid: 7fc2d4c4b6c553a489e88882f6f2e2e3, type: 3}
   _faceSprite: {fileID: 21300000, guid: 401d226a1242ca34aa9a2de86bfcb7ba, type: 3}
   _maxHealth: 15
+  _maxMagicPoint: 0
   _attackPoint: 5
   _magicDefensePoint: 5
   _physDefensePoint: 0
+  _speed: 1
+  _effectResistances:
+    _poison: 0
+    _burn: 0
+    _freeze: 0
+    _paralysis: 0
+    _bleed: 0
+    _confusion: 0
+    _stun: 0
   _skills:
   - rid: 6325161946243923972
   references:

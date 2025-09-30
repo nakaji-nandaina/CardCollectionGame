@@ -50,7 +50,20 @@ public class UnitSlot
     /// </summary>
     public int MagicDefensePoint => UnitData.MagicDefensePoint + Mathf.CeilToInt(UnitData.MagicDefensePoint / 10) * (Level - 1);
 
+    /// <summary>
+    /// 速度
+    /// </summary>
+    public int Speed => UnitData.Speed;
 
+    /// <summary>
+    /// 状態異常耐性
+    /// </summary>
+    public EffectResistances EffectResistances => UnitData.EffectResistances;
+
+    /// <summary>
+    /// スキルデータ一覧
+    /// </summary>
+    public List<BaseSkillData> Skills => UnitData.Skills;
     public UnitSlot(PlayerUnitData unitData, int level = 1, int exp = 0)
     {
         InstanceId = Guid.NewGuid().ToString();

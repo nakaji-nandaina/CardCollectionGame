@@ -17,6 +17,7 @@ public class ExplorePresenter : MonoBehaviour
         DungeonManager.Instance.OnDungeonStateChanged += OnDungeonStateChanged;
 
         _battleController.OnBattlePrepared += OnBattlePrepared;
+        _battleController.OnBattleFinished += OnBattleFinished;
         _battleController.OnAttackPerformed += OnAttackPerformed;
 
         _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
@@ -51,17 +52,26 @@ public class ExplorePresenter : MonoBehaviour
                 break;
             case DungeonState.FloorStart:
                 _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
-                _exploreView.UpdateFloor(DungeonManager.Instance.CurrentFloor);
+                _logView.AddLog("");
                 _logView.AddLog($"--- {DungeonManager.Instance.CurrentFloor}F到達 ---");
+                _exploreView.UpdateFloor(DungeonManager.Instance.CurrentFloor,OnUpdateFloorFinished);
                 break;
             case DungeonState.FloorCleared:
-                _logView.AddLog($"--- {DungeonManager.Instance.CurrentFloor}Fクリア ---");
+                //_logView.AddLog("");
+                //_logView.AddLog($"--- {DungeonManager.Instance.CurrentFloor}Fクリア ---");
                 break;
 
         }
     }
+
+    private void OnUpdateFloorFinished() 
+    {
+        DungeonManager.Instance.NotifyFloorStartAnimationFinished();
+    }
+
     private void OnBattlePrepared(List<BattleController.BattleUnit> players, List<BattleController.BattleUnit> enemies)
     {
+        _logView.AddLog("");
         _logView.AddLog("戦闘開始！");
         // ExploreView に敵データを渡して初期化（表示順と HP max を設定）
         if (enemies != null)
@@ -83,6 +93,20 @@ public class ExplorePresenter : MonoBehaviour
             _playerUnitsView.SetUp(InventoryManager.Instance.FormedUnitList);
             _playerUnitsView.SetUp(players);
         }
+    }
+
+    private void OnBattleFinished(BattleResult result, int exp, List<BattleController.BattleUnit> players)
+    {
+        if (result == BattleResult.Victory)
+        {
+            _logView.AddLog("戦闘勝利！");
+            _logView.AddLog($"{exp}exp 獲得");
+        }
+        else
+        {
+            _logView.AddLog("戦闘敗北...");
+        }
+        DungeonManager.Instance.NotifyFloorClearedAnimationFinished();
     }
 
     private void OnAttackPerformed(BattleController.BattleUnit attacker, BattleController.BattleUnit target, int damage)
@@ -108,6 +132,7 @@ public class ExplorePresenter : MonoBehaviour
             if (_enemyIndexById.TryGetValue(target.InstanceId, out int idx))
             {
                 _exploreView.UpdateEnemy(idx, target.CurrentHp);
+                _exploreView.PlayEnemyDamagedAnimation(idx);
             }
         }
     }
