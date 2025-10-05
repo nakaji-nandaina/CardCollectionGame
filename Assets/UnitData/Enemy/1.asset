@@ -16,12 +16,12 @@ MonoBehaviour:
   _unitName: "\u65751"
   _fullSprite: {fileID: 21300000, guid: f5b0b501c54ac754cb4aed99b39759f4, type: 3}
   _faceSprite: {fileID: 21300000, guid: defc21c0054256a459a80d25ddf12a8c, type: 3}
-  _maxHealth: 30
+  _maxHealth: 59
   _maxMagicPoint: 50
-  _attackPoint: 3
+  _attackPoint: 58
   _magicDefensePoint: 0
   _physDefensePoint: 0
-  _speed: 2
+  _speed: 10
   _effectResistances:
     _poison: 0
     _burn: 0

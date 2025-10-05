@@ -11,6 +11,7 @@ public enum SEName
     Magic,
     Damaged,
     Heal,
+    Clear,
     LevelUp,
 }
 
@@ -47,8 +48,8 @@ public class SEEntry
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-    private AudioSource _bgmSource;
-    private AudioSource _seSource;
+    [SerializeField, Header("BGM用")]private AudioSource _bgmSource;
+    [SerializeField, Header("SE用")]private AudioSource _seSource;
 
     [SerializeField, Header("BGMリスト")] private List<BGMEntry> _bgmList;
     [SerializeField, Header("SEリスト")] private List<SEEntry> _seList;
@@ -62,9 +63,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            _bgmSource = gameObject.AddComponent<AudioSource>();
             _bgmSource.loop = true;
-            _seSource = gameObject.AddComponent<AudioSource>();
             InitDictionary();
         }
         else

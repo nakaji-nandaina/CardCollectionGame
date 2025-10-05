@@ -23,6 +23,21 @@ public class BattleCardView : MonoBehaviour
         _hpBar.value = unit.CurrentHp;
         _mpBar.maxValue = unit.MaxMp;
         _mpBar.value = unit.CurrentMp;
+        _hpText.text = $"{_hpBar.value}/{_hpBar.maxValue}";
+        _mpText.text = $"{_mpBar.value}/{_mpBar.maxValue}";
+        gameObject.SetActive(true);
+    }
+    public void SetUp(BattleUnit unit)
+    {
+        _instanceId = unit.InstanceId;
+        _cardImage.sprite = unit.Data.FaceSprite;
+        _cardName.text = unit.Data.UnitName;
+        _hpBar.maxValue = unit.MaxHp;
+        _hpBar.value = unit.CurrentHp;
+        _mpBar.maxValue = unit.MaxMp;
+        _mpBar.value = unit.CurrentMp;
+        _hpText.text = $"{_hpBar.value}/{_hpBar.maxValue}";
+        _mpText.text = $"{_mpBar.value}/{_mpBar.maxValue}";
         gameObject.SetActive(true);
     }
     public void UpdateCurrent(int currentHp, int currentMp)

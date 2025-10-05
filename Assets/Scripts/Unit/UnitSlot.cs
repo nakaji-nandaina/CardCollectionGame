@@ -14,19 +14,19 @@ public class UnitSlot
     /// UŒ‚—Í
     /// Šî‘bUŒ‚—Í + (Šî‘bUŒ‚—Í‚Ì10% * (ƒŒƒxƒ‹ - 1) * 2)
     /// </summary>
-    public int AttackPoint => UnitData.AttackPoint + Mathf.CeilToInt(UnitData.AttackPoint/10) * (Level - 1) * 2;
+    public int AttackPoint => UnitData.AttackPoint + Mathf.CeilToInt(UnitData.AttackPoint * (Level - 1) * 2 / 10);
 
     /// <summary>
     /// Å‘å‘Ì—Í
     /// Šî‘b‘Ì—Í + (Šî‘b‘Ì—Í‚Ì10% * (ƒŒƒxƒ‹ - 1) * 5)
     /// </summary>
-    public int MaxHp => UnitData.MaxHealth + Mathf.CeilToInt(UnitData.MaxHealth / 10) * (Level - 1) * 5;
+    public int MaxHp => UnitData.MaxHealth + Mathf.CeilToInt(UnitData.MaxHealth * (Level - 1) * 5 / 10);
 
     /// <summary>
     /// Å‘å–‚—Í
     /// Šî‘b–‚—Í + (Šî‘b–‚—Í‚Ì10% * (ƒŒƒxƒ‹ - 1) * 3)
     /// </summary>
-    public int MaxMp => UnitData.MaxMagicPoint + Mathf.CeilToInt(UnitData.MaxMagicPoint / 10) * (Level - 1) * 3;
+    public int MaxMp => UnitData.MaxMagicPoint + Mathf.CeilToInt(UnitData.MaxMagicPoint * (Level - 1) * 3 / 10);
 
     /// <summary>
     /// Œ»İ‘Ì—Í
@@ -39,16 +39,21 @@ public class UnitSlot
     public int CurrentMp { get; set; }
 
     /// <summary>
+    /// ƒ†ƒjƒbƒg‚Ì¶‘¶ó‘Ô
+    /// </summary>
+    public bool IsAlive => CurrentHp > 0;
+
+    /// <summary>
     /// •¨—–hŒä
     /// Šî‘b•¨—–hŒä + (Šî‘b•¨—–hŒä‚Ì10% * (ƒŒƒxƒ‹ - 1))
     /// </summary>
-    public int PhysDefensePoint => UnitData.PhysDefensePoint + Mathf.CeilToInt(UnitData.PhysDefensePoint / 10) * (Level - 1);
+    public int PhysDefensePoint => UnitData.PhysDefensePoint + Mathf.CeilToInt(UnitData.PhysDefensePoint * (Level - 1) / 10);
 
     /// <summary>
     /// –‚–@–hŒä
     /// Šî‘b–‚–@–hŒä + (Šî‘b–‚–@–hŒä‚Ì10% * (ƒŒƒxƒ‹ - 1))
     /// </summary>
-    public int MagicDefensePoint => UnitData.MagicDefensePoint + Mathf.CeilToInt(UnitData.MagicDefensePoint / 10) * (Level - 1);
+    public int MagicDefensePoint => UnitData.MagicDefensePoint + Mathf.CeilToInt(UnitData.MagicDefensePoint * (Level - 1) / 10);
 
     /// <summary>
     /// ‘¬“x
@@ -70,8 +75,8 @@ public class UnitSlot
         UnitData = unitData;
         Level = level;
         Exp = exp;
-        CurrentHp = UnitData.MaxHealth + Mathf.CeilToInt(UnitData.MaxHealth / 10) * (Level - 1) * 5;
-        CurrentMp = UnitData.MaxMagicPoint + Mathf.CeilToInt(UnitData.MaxMagicPoint / 10) * (Level - 1) * 3;
+        CurrentHp = MaxHp;
+        CurrentMp = MaxMp;
     }
 
     public UnitSlot(string instanceId,PlayerUnitData unitData, int level = 1, int exp = 0)
@@ -80,8 +85,8 @@ public class UnitSlot
         UnitData = unitData;
         Level = level;
         Exp = exp;
-        CurrentHp = UnitData.MaxHealth + Mathf.CeilToInt(UnitData.MaxHealth / 10) * (Level - 1) * 5;
-        CurrentMp = UnitData.MaxMagicPoint + Mathf.CeilToInt(UnitData.MaxMagicPoint / 10) * (Level - 1) * 3;
+        CurrentHp = MaxHp;
+        CurrentMp = MaxMp;
     }
 
     public void AddExp(int amount)

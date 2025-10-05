@@ -21,7 +21,7 @@ MonoBehaviour:
   _attackPoint: 5
   _magicDefensePoint: 0
   _physDefensePoint: 0
-  _speed: 1
+  _speed: 10
   _effectResistances:
     _poison: 0
     _burn: 0

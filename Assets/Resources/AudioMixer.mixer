@@ -38,6 +38,28 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-4219148961522796112
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 691c112979b589141b6aca1e72993302
+  m_EffectName: Compressor
+  m_MixLevel: f059db9bc4e12a2459f33e47148b1563
+  m_Parameters:
+  - m_ParameterName: Threshold
+    m_GUID: 5f98115cc709e944789a7409128455f4
+  - m_ParameterName: Attack
+    m_GUID: 9b3c22b6a4a51bf4f88900900b6bc961
+  - m_ParameterName: Release
+    m_GUID: 7e2c998edb2987d4999d1d1607c83348
+  - m_ParameterName: Make up gain
+    m_GUID: 45c475c4f7fe0b24da9676881793e642
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-4087246854410817308
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -69,9 +91,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 2ef7e95a7642cdd47842ddcabfa2be84
-    name: MyExposedParam
+    name: MasterVol
+  - guid: b8f316672cd17f54d858466543fa8ca0
+    name: BGMVol
   - guid: 2b5e866e012303646960538bffa53058
-    name: MyExposedParam 1
+    name: SEVol
   m_AudioMixerGroupViews:
   - guids:
     - c6720947e9e0c5343900fa2e2ab98997
@@ -124,7 +148,9 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 7f4715ad1a500ab4fa072ae4d6170862
-  m_FloatValues: {}
+  m_FloatValues:
+    2ef7e95a7642cdd47842ddcabfa2be84: -10.345207
+    2b5e866e012303646960538bffa53058: -6.133707
   m_TransitionOverrides: {}
 --- !u!244 &5472357767538913056
 AudioMixerEffectController:

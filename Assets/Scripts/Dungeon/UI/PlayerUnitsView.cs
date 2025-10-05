@@ -27,25 +27,16 @@ public class PlayerUnitsView : MonoBehaviour
             if (v != null) v.gameObject.SetActive(false);
         }
     }
+
     // バトル準備時に BattleUnit の現在値を一括で反映する（InstanceIdでマッチ）
-    public void SetUp(List<BattleController.BattleUnit> players)
+    public void SetUp(List<BattleUnit> players)
     {
         foreach (var p in players)
         {
             if (string.IsNullOrEmpty(p.InstanceId)) continue;
             if (_views.TryGetValue(p.InstanceId, out var view))
             {
-                view.UpdateCurrent(p.CurrentHp, p.CurrentMp);
-            }
-            else
-            {
-                // 保険: Inspector でセットしたビュー群に InstanceId を持たせているか確認してマップを補完
-                var match = _playerCardPrefabList.FirstOrDefault(v => v != null && v.InstanceId == p.InstanceId);
-                if (match != null)
-                {
-                    _views[p.InstanceId] = match;
-                    match.UpdateCurrent(p.CurrentHp, p.CurrentMp);
-                }
+                view.SetUp(p);
             }
         }
     }
@@ -107,5 +98,22 @@ public class PlayerUnitsView : MonoBehaviour
         {
             rt.DOAnchorPos(start, upDuration).SetEase(Ease.InSine);
         });
+    }
+    /// <summary>
+    /// ユニットの InstanceId から RectTransform を取得する
+    /// </summary>
+    /// <param name="instanceId"></param>
+    /// <param name="rt"></param>
+    /// <returns></returns>
+    public bool TryGetRectTransform(string instanceId, out RectTransform rt)
+    {
+        rt = null;
+        if (string.IsNullOrEmpty(instanceId)) return false;
+        if (_views.TryGetValue(instanceId, out var view))
+        {
+            rt = view.transform as RectTransform;
+            return rt != null;
+        }
+        return false;
     }
 }

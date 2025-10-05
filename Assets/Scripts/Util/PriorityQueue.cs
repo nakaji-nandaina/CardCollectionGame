@@ -6,6 +6,7 @@ using UnityEngine;
 public class PriorityQueue<T> where T : IComparable<T>
 {
     private List<T> _data = new List<T>();
+    public List<T> Data => _data;
     public int Count => _data.Count;
     public void Push(T item)
     {

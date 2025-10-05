@@ -12,12 +12,19 @@ public class TownPresenter : MonoBehaviour
         CheckStartUnit();
         _townView.SetUp(OnStartButtonPressed);
     }
+
+    private void OnDisable()
+    {
+        TownManager.OnTownChangeState -= OnTownStateChanged;
+    }
+
     private void OnTownStateChanged(TownState state)
     {
         switch (state)
         {
             case TownState.Idle:
                 AudioManager.Instance.PlayBGM(BGMName.Town);
+                Debug.Log("拠点に到着");
                 break;
 
             case TownState.Start:
@@ -28,6 +35,7 @@ public class TownPresenter : MonoBehaviour
 
     private void CheckStartUnit()
     {
+        // チュートリアル用に最初の5体を編成に追加
         if (InventoryManager.Instance.FormedUnitList.Count == 0)
         {
             for(int i = 0; i < 5; i++)

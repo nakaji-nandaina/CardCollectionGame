@@ -12,8 +12,26 @@ public enum SceneName
 
 public static class SceneLoader
 {
+    public static SceneName CurrentScene
+    {
+        get
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (System.Enum.TryParse<SceneName>(scene.name, out var sceneName))
+            {
+                return sceneName;
+            }
+            return default;
+        }
+    }
     public static void LoadScene(SceneName sceneName)
     {
         SceneManager.LoadScene(sceneName.ToString());
     }
+    public static void ReLoadScene()
+    {
+        LoadScene(CurrentScene);
+    }
 }
+
+

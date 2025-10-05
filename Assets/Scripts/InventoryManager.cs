@@ -6,7 +6,9 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
     private List<UnitSlot> _formedUnitList = new List<UnitSlot>();
     private List<UnitSlot> _ownedUnitList = new List<UnitSlot>();
+    private List<UnitSlot> _inBattleUnitList = new List<UnitSlot>();
 
+    public List<UnitSlot> InBattleUnitList => _inBattleUnitList;
     public List<UnitSlot> FormedUnitList => _formedUnitList;
     public List<UnitSlot> OwnedUnitList => _ownedUnitList;
 
@@ -23,21 +25,72 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 編成ユニットをバトルユニットに反映
+    /// </summary>
+    public void SetBattleUnit()
+    {
+        _inBattleUnitList = new List<UnitSlot>(_formedUnitList);
+    }
+
+    /// <summary>
+    /// バトルユニットの状態を編成ユニットに反映
+    /// </summary>
+    public void SetFormedUnit()
+    {
+        _formedUnitList = new List<UnitSlot>(_inBattleUnitList);
+        foreach (var unit in _formedUnitList)
+        {
+            unit.SetCurrent(unit.MaxHp, unit.MaxMp);
+        }
+    }
+
+    /// <summary>
+    /// 戦闘中のユニットに経験値を分配
+    /// </summary>
+    /// <param name="exp"></param>
+    public void AddBattleUnitExp(int exp)
+    {
+        // バトルユニットがいなければ終了
+        if (_inBattleUnitList.Count == 0) 
+            return;
+        // 生存しているユニットに経験値を分配
+        foreach (var unit in _inBattleUnitList)
+        {
+            if (!unit.IsAlive) 
+                continue;
+            unit.AddExp(exp);
+        }
+    }
+
+    /// <summary>
+    /// 編成中のユニットに経験値を分配
+    /// </summary>
+    /// <param name="exp"></param>
     public void AddFormedUnitExp(int exp)
     {
-        if (_formedUnitList.Count == 0) return;
+        if (_formedUnitList.Count == 0) 
+            return;
+
         foreach (var unit in _formedUnitList)
         {
             unit.AddExp(exp);
         }
     }
-    public void UpdateFormedUnitState(List<int> currentHps, List<int> currentMps)
+
+    /// <summary>
+    /// 戦闘中のユニットのHPとMPを更新
+    /// </summary>
+    /// <param name="currentHps"></param>
+    /// <param name="currentMps"></param>
+    public void UpdateBattleUnitState(List<int> currentHps, List<int> currentMps)
     {
-        for (int i = 0; i < _formedUnitList.Count; i++)
+        for (int i = 0; i < _inBattleUnitList.Count; i++)
         {
-            _formedUnitList[i].SetCurrent(currentHps[i], currentMps[i]);
+            _inBattleUnitList[i].SetCurrent(currentHps[i], currentMps[i]);
         }
     }
+
 
     public void AddFormedUnit(UnitSlot unit)
     {

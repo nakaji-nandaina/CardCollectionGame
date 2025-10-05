@@ -17,11 +17,11 @@ MonoBehaviour:
   _fullSprite: {fileID: 21300000, guid: 7fc2d4c4b6c553a489e88882f6f2e2e3, type: 3}
   _faceSprite: {fileID: 21300000, guid: 401d226a1242ca34aa9a2de86bfcb7ba, type: 3}
   _maxHealth: 15
-  _maxMagicPoint: 0
+  _maxMagicPoint: 30
   _attackPoint: 5
   _magicDefensePoint: 5
   _physDefensePoint: 0
-  _speed: 1
+  _speed: 10
   _effectResistances:
     _poison: 0
     _burn: 0
@@ -40,5 +40,6 @@ MonoBehaviour:
       data:
         _skillName: "\u5996\u7CBE\u306E\u5149"
         _mpCost: 10
+        skillFxType: 0
         _baseHealAmount: 3
         _healPowerRate: 0.5

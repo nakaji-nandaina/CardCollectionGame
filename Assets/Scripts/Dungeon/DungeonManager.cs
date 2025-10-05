@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ public class DungeonManager : MonoBehaviour
     private int _currentFloor = 1;  // 現在のフロア
     private int _gotGold = 0;       // 獲得したゴールド
     private float _playSpeed = 1.0f;// プレイ速度
+    private float _defaultFixedDeltaTime; // 物理ステップの初期値保持
+
     private List<PlayerUnitData> _gotUnitDataList = new List<PlayerUnitData>(); // 獲得したユニットデータリスト
     private DungeonData _currentDungeonData = null; // 現在のダンジョンデータ
     private Coroutine _dungeonLoop;
@@ -35,14 +38,43 @@ public class DungeonManager : MonoBehaviour
     public float PlaySpeed => _playSpeed;
     public List<PlayerUnitData> GotUnitDataList => _gotUnitDataList;
     public DungeonData CurrentDungeonData => _currentDungeonData;
-
     public Action<DungeonState> OnDungeonStateChanged;
-    public Action<float> OnPlaySpeedChanged;
+    
     private void Awake()
     {
         Instance = this;
+        _defaultFixedDeltaTime = Time.fixedDeltaTime;
     }
 
+    private void ApplyPlaySpeed()
+    {
+        Time.timeScale = _playSpeed;
+        DOTween.timeScale = _playSpeed;
+        Time.fixedDeltaTime = _defaultFixedDeltaTime * _playSpeed;
+    }
+
+    private void ResetPlaySpeed()
+    {
+        Time.timeScale = Const.Time.DefaultSpeed;
+        DOTween.timeScale = Const.Time.DefaultSpeed;
+        Time.fixedDeltaTime = _defaultFixedDeltaTime;
+    }
+
+    public void SetPlaySpeed(float speed)
+    {
+        speed = Mathf.Clamp(speed, Const.Time.MinSpeed, Const.Time.MaxSpeed);
+        if (Mathf.Approximately(_playSpeed, speed))
+            return;
+
+        _playSpeed = speed;
+        ApplyPlaySpeed();
+    }
+
+    public void StopPlaySpeed()
+    {
+        _playSpeed = 0f;
+        ApplyPlaySpeed();
+    }
 
     private void ChangeState(DungeonState newState)
     {
@@ -83,6 +115,11 @@ public class DungeonManager : MonoBehaviour
     }
     public void NotifyFloorClearedAnimationFinished()
     {
+        //敗北時は FloorCleared にならないので無視
+        if (_currentState != DungeonState.FloorCleared)
+        {
+            return;
+        }
         ChangeState(DungeonState.FloorEnd);
     }
 
@@ -98,6 +135,15 @@ public class DungeonManager : MonoBehaviour
                 break;
         }
     }
+
+    public void HandleRetire()
+    {
+        if(_currentState == DungeonState.Battle || _currentState == DungeonState.FloorStart)
+        {
+            ChangeState(DungeonState.Failed);
+        }
+    }
+
     private IEnumerator DungeonLoop()
     {
         ChangeState(DungeonState.DungeonStart);
@@ -119,6 +165,7 @@ public class DungeonManager : MonoBehaviour
 
             if (_currentState == DungeonState.Failed)
             {
+                ResetPlaySpeed();
                 _dungeonLoop = null;
                 yield break;
             }
@@ -131,7 +178,11 @@ public class DungeonManager : MonoBehaviour
 
         // 全フロアクリア
         ChangeState(DungeonState.DungeonCleared);
+        ResetPlaySpeed();
         _dungeonLoop = null;
     }
-
+    private void OnDisable()
+    {
+        ResetPlaySpeed();
+    }
 }
